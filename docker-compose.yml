@@ -1,6 +1,40 @@
 services:
+  db:
+    image: postgres:17
+    restart: always
+    container_name: postgres_container
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_USER: usecustodio
+      POSTGRES_PASSWORD: dbcustodiopassword123
+      POSTGRES_DB: custodio
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - custodio_network
+
   server:
     build:
       context: .
+      dockerfile: Dockerfile
+    container_name: custodio_server
     ports:
       - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: usecustodio
+      DB_PASSWORD: dbcustodiopassword123
+      DB_NAME: custodio
+    networks:
+      - custodio_network
+
+volumes:
+  db_data:
+
+networks:
+  custodio_network:

@@ -9,7 +9,7 @@ import (
 
 var jwtSecret = []byte("custodio-super-secret-key")
 
-func GenerateToken(userID int) (string, error) {
+func GenerateToken(userID uint) (string, error) {
 	claims := jwt.MapClaims{
 		"user_id": userID,
 		"exp":     time.Now().Add(24 * time.Hour).Unix(),

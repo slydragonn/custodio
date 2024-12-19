@@ -11,17 +11,16 @@ import (
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		authHeader := c.GetHeader("Authorization")
-		if authHeader == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token not provided"})
+		tokenStr := c.GetHeader("Authorization")
+		if tokenStr == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Missing token"})
 			c.Abort()
 			return
 		}
 
-		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
-		claims, err := jwt.VerifyToken(tokenStr)
+		claims, err := jwt.VerifyToken(strings.TrimPrefix(tokenStr, "Bearer "))
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid Token"})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 			c.Abort()
 			return
 		}
