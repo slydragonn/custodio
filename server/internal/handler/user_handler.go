@@ -17,9 +17,9 @@ func NewUserHandler(userService service.UserService) *UserHandler {
 
 func (h *UserHandler) RegisterUser(c *gin.Context) {
 	var req struct {
-		Name     string `json: "name"`
-		Email    string `json: "email"`
-		Password string `json: "password"`
+		Name     string `json:"name"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
 	}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
