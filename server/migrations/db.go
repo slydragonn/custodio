@@ -8,8 +8,13 @@ import (
 )
 
 func Migrate(db *gorm.DB) {
-	err := db.AutoMigrate(&model.User{})
+	err := db.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";").Error
 	if err != nil {
+		log.Fatalf("Failed to enable uuid-ossp extension: %v", err)
+	}
+
+	migrateErr := db.AutoMigrate(&model.User{})
+	if migrateErr != nil {
 		log.Fatalf("Failed to run migrations: %v", err)
 	}
 }

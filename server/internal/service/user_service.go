@@ -10,7 +10,7 @@ import (
 
 type UserService interface {
 	RegisterUser(name, email, password string) error
-	GetUserByID(id uint) (*model.User, error)
+	GetUserByID(id string) (*model.User, error)
 }
 
 type userService struct {
@@ -41,6 +41,6 @@ func (s *userService) RegisterUser(name, email, password string) error {
 	return s.repo.Create(user)
 }
 
-func (s *userService) GetUserByID(id uint) (*model.User, error) {
+func (s *userService) GetUserByID(id string) (*model.User, error) {
 	return s.repo.FindByID(id)
 }
