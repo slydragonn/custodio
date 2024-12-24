@@ -19,12 +19,20 @@ func main() {
 	database := db.Connect()
 	migrations.Migrate(database)
 
+	//repositories
 	userRepo := repository.NewUserRepository(database)
-	authService := service.NewAuthService(userRepo)
-	userService := service.NewUserService(userRepo)
+	passwordRepo := repository.NewPasswordRepository(database)
 
+	//services
+	authService := service.NewAuthService(userRepo)
+
+	userService := service.NewUserService(userRepo)
+	passwordService := service.NewPasswordService(passwordRepo)
+
+	//handlers
 	userHandler := handler.NewUserHandler(userService)
 	authHandler := handler.NewAuthHandler(authService)
+	passwordHandler := handler.NewPasswordHandler(passwordService)
 
 	r := gin.Default()
 
@@ -39,6 +47,10 @@ func main() {
 		claims := c.MustGet("claims").(jwt.MapClaims)
 		c.JSON(http.StatusOK, gin.H{"message": "Access granted", "claims": claims})
 	})
+	protected.POST("/passwords", passwordHandler.Register)
+	protected.GET("/passwords", passwordHandler.GetUserPasswords)
+	protected.PUT("/passwords/:id", passwordHandler.Update)
+	protected.DELETE("/passwords/:id", passwordHandler.Delete)
 
 	r.Run(":8080")
 }

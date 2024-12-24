@@ -13,7 +13,7 @@ func Migrate(db *gorm.DB) {
 		log.Fatalf("Failed to enable uuid-ossp extension: %v", err)
 	}
 
-	migrateErr := db.AutoMigrate(&model.User{})
+	migrateErr := db.AutoMigrate(&model.User{}, &model.Password{})
 	if migrateErr != nil {
 		log.Fatalf("Failed to run migrations: %v", err)
 	}
