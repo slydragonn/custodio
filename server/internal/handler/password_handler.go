@@ -77,7 +77,7 @@ func (h *PasswordHandler) Update(c *gin.Context) {
 		Name:     req.Name,
 		Username: req.Username,
 		Password: req.Password,
-		Website:  req.Password,
+		Website:  req.Website,
 		Note:     req.Note,
 		Favorite: req.Favorite,
 	}
