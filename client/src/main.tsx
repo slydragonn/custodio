@@ -7,6 +7,7 @@ import { Theme } from '@radix-ui/themes'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import Home from './pages/Home.tsx'
 import Register from './pages/Register.tsx'
+import Login from './pages/Login.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/" element={<App />}>
             <Route index element={<Home />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
           </Route>
         </Routes>
       </BrowserRouter>

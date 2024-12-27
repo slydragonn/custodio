@@ -1,8 +1,8 @@
 import { Flex, Heading, Text } from '@radix-ui/themes'
-import SignUpForm from '../components/auth/SignUpForm'
 import { NavLink } from 'react-router'
+import LoginForm from '../components/auth/LoginForm'
 
-export default function Register() {
+export default function Login() {
   return (
     <main>
       <Flex
@@ -14,10 +14,11 @@ export default function Register() {
         height="100vh"
         gap="6"
       >
-        <Heading as="h1">Create an account</Heading>
-        <SignUpForm />
+        <Heading as="h1">Login</Heading>
+        <LoginForm />
         <Text>
-          Already have an account? <NavLink to="/login">Log in</NavLink>
+          Don't have an account?{' '}
+          <NavLink to="/register">Create an account</NavLink>
         </Text>
       </Flex>
     </main>
