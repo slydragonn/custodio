@@ -2,7 +2,9 @@ package main
 
 import (
 	"net/http"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/usecustodio/custodio/server/internal/handler"
 	"github.com/usecustodio/custodio/server/internal/middleware"
 	"github.com/usecustodio/custodio/server/internal/repository"
@@ -35,6 +37,16 @@ func main() {
 	passwordHandler := handler.NewPasswordHandler(passwordService)
 
 	r := gin.Default()
+
+	//cors middleware
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"}, // Client URL
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowCredentials: true,
+		ExposeHeaders:    []string{"Content-Length"},
+		MaxAge:           12 * time.Hour,
+	}))
 
 	//public routes
 	r.POST("/register", userHandler.RegisterUser)
