@@ -45,7 +45,7 @@ export default function LoginForm() {
       login(token)
       navigate('/')
     } catch (error) {
-      toast.error(error.message)
+      toast.error((error as Error).message)
     }
   }
 

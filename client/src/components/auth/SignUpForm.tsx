@@ -46,7 +46,7 @@ export default function SignUpForm() {
       toast.success(json.message)
     } catch (error) {
       console.error(error)
-      toast.error(error.message)
+      toast.error((error as Error).message)
     }
   }
 
