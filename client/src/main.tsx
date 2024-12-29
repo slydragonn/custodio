@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from 'react-router'
 import Home from './pages/Home.tsx'
 import Register from './pages/Register.tsx'
 import Login from './pages/Login.tsx'
+import ProtectedRoute from './layouts/ProtectedRoute.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -15,7 +16,14 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />}>
-            <Route index element={<Home />} />
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
           </Route>

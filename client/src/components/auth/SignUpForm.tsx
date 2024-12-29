@@ -2,13 +2,23 @@ import Input from '../ui/Input'
 import { EnterIcon } from '@radix-ui/react-icons'
 import { Button, Flex } from '@radix-ui/themes'
 import Label from '../ui/Label'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
+import useAuthStore from '../../store/authStore'
+import { useNavigate } from 'react-router'
 
 export default function SignUpForm() {
   const [name, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const { isAuthenticated } = useAuthStore((state) => state)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/')
+    }
+  }, [isAuthenticated, navigate])
 
   const handleSubmit = async () => {
     try {
