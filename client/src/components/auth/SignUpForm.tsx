@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import useAuthStore from '../../store/authStore'
 import { useNavigate } from 'react-router'
+import { UserRegister } from '../../types/user'
 
 export default function SignUpForm() {
   const [name, setUsername] = useState('')
@@ -26,7 +27,7 @@ export default function SignUpForm() {
         throw new Error('Missing form data')
       }
 
-      const registerData = {
+      const registerData: UserRegister = {
         name,
         email,
         password,

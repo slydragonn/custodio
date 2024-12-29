@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import useAuthStore from '../../store/authStore'
 import { useNavigate } from 'react-router'
+import { UserLogin } from '../../types/user'
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')
@@ -25,7 +26,7 @@ export default function LoginForm() {
         throw new Error('Missing form data')
       }
 
-      const loginData = {
+      const loginData: UserLogin = {
         email,
         password,
       }
