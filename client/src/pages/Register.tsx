@@ -1,5 +1,5 @@
 import { Flex, Heading, Text } from '@radix-ui/themes'
-import SignUpForm from '../components/auth/SignUpForm'
+import SignUpForm from '@/components/auth/SignUpForm'
 import { NavLink } from 'react-router'
 
 export default function Register() {

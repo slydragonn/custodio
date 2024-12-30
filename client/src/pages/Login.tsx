@@ -1,6 +1,6 @@
 import { Flex, Heading, Text } from '@radix-ui/themes'
 import { NavLink } from 'react-router'
-import LoginForm from '../components/auth/LoginForm'
+import LoginForm from '@/components/auth/LoginForm'
 
 export default function Login() {
   return (

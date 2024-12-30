@@ -1,12 +1,12 @@
-import Input from '../ui/Input'
+import Input from '@/components/ui/Input'
 import { EnterIcon } from '@radix-ui/react-icons'
 import { Button, Flex } from '@radix-ui/themes'
-import Label from '../ui/Label'
+import Label from '@/components/ui/Label'
 import { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import useAuthStore from '../../store/authStore'
+import useAuthStore from '@/store/authStore'
 import { useNavigate } from 'react-router'
-import { UserLogin } from '../../types/user'
+import { UserLogin } from '@/types/user'
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')
