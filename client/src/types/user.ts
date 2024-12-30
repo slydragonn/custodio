@@ -1,12 +1,12 @@
 import { PasswordData } from './passwords'
 
 export interface UserData {
-  id: string
-  createdAt: Date
-  updatedAt: Date
-  name: string
-  email: string
-  passwords: PasswordData[]
+  ID: string
+  CreatedAt: Date
+  UpdatedAt: Date
+  Name: string
+  Email: string
+  Passwords: PasswordData[]
 }
 
 export interface UserRegister {
