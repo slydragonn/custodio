@@ -19,3 +19,5 @@ export interface UserLogin {
   email: string
   password: string
 }
+
+export type Token = string | null
