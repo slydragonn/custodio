@@ -1,9 +1,10 @@
+import { Token } from '@/types/user'
 import { jwtDecode } from 'jwt-decode'
 import { create, StoreApi, UseBoundStore } from 'zustand'
 
 interface AuthStore {
   isAuthenticated: boolean
-  token: string | null
+  token: Token
   login: (token: string) => void
   logout: () => void
 }
