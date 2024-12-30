@@ -9,6 +9,7 @@ import Home from '@/pages/Home.tsx'
 import Register from '@/pages/Register.tsx'
 import Login from '@/pages/Login.tsx'
 import ProtectedRoute from '@/layouts/ProtectedRoute.tsx'
+import Passwords from '@/pages/Passwords'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -21,6 +22,14 @@ createRoot(document.getElementById('root')!).render(
               element={
                 <ProtectedRoute>
                   <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/passwords"
+              element={
+                <ProtectedRoute>
+                  <Passwords />
                 </ProtectedRoute>
               }
             />
