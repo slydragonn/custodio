@@ -1,8 +1,8 @@
 import { Button } from '@radix-ui/themes'
-import useAuthStore from '../store/authStore'
+import useAuthStore from '@/store/authStore'
 
 export default function Home() {
-  const logout = useAuthStore((state) => state.logout)
+  const { logout } = useAuthStore()
 
   const handleLogout = () => {
     logout()
