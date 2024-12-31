@@ -1,17 +1,9 @@
-import { Button } from '@radix-ui/themes'
-import useAuthStore from '@/store/authStore'
+import DesktopLayout from '@/layouts/Desktop'
 
 export default function Home() {
-  const { logout } = useAuthStore()
-
-  const handleLogout = () => {
-    logout()
-  }
-
   return (
-    <div>
+    <DesktopLayout>
       <h1>Home</h1>
-      <Button onClick={handleLogout}>Logout</Button>
-    </div>
+    </DesktopLayout>
   )
 }

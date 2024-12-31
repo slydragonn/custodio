@@ -1,3 +1,9 @@
+import DesktopLayout from '@/layouts/Desktop'
+
 export default function Passwords() {
-  return <h1>Passwords</h1>
+  return (
+    <DesktopLayout>
+      <h1>Passwords</h1>
+    </DesktopLayout>
+  )
 }
