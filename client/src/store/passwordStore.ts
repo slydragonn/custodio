@@ -6,8 +6,12 @@ import { persist } from 'zustand/middleware'
 interface PasswordStore {
   passwords: [] | PasswordData[]
   loading: boolean
-  getData: (url: string, token: Token) => Promise<void>
-  add: (password: PasswordForm, url: string, token: Token) => Promise<void>
+  getPasswords: (url: string, token: Token) => Promise<void>
+  addPassword: (
+    password: PasswordForm,
+    url: string,
+    token: Token,
+  ) => Promise<void>
 }
 
 const usePasswordStore = create<PasswordStore>()(
@@ -17,7 +21,7 @@ const usePasswordStore = create<PasswordStore>()(
       loading: false,
 
       //Fetch passwords from the server
-      getData: async (url: string, token: Token) => {
+      getPasswords: async (url: string, token: Token) => {
         set({ loading: true })
         try {
           const headers = new Headers()
@@ -35,7 +39,11 @@ const usePasswordStore = create<PasswordStore>()(
           console.error(error)
         }
       },
-      add: async (password: PasswordForm, url: string, token: Token) => {
+      addPassword: async (
+        password: PasswordForm,
+        url: string,
+        token: Token,
+      ) => {
         set({ loading: true })
         try {
           const headers = new Headers()
