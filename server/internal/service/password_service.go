@@ -11,7 +11,7 @@ import (
 var key []byte = []byte(utils.Getenv("CRYPTO_KEY", "examplekey123456")) // Must be of 16, 24 or 32 bytes
 
 type PasswordService interface {
-	Create(userID, name, username, password, website, note string, favorite bool) error
+	Create(userID, name, username, password, website, note string, favorite bool) (*model.Password, error)
 	GetAll(userID string) ([]model.Password, error)
 	Update(passwordID string, userID string, updatedPassword repository.Password) error
 	Delete(passwordID, userID string) error
@@ -25,26 +25,26 @@ func NewPasswordService(repo repository.PasswordRepository) PasswordService {
 	return &passwordService{repo: repo}
 }
 
-func (s *passwordService) Create(userID, name, username, password, website, note string, favorite bool) error {
+func (s *passwordService) Create(userID, name, username, password, website, note string, favorite bool) (*model.Password, error) {
 
 	encryptedUsername, err := utils.Encrypt(username, key)
 	if err != nil {
-		return fmt.Errorf("encrypting username failed")
+		return &model.Password{}, fmt.Errorf("encrypting username failed")
 	}
 
 	encryptedPassword, err := utils.Encrypt(password, key)
 	if err != nil {
-		return fmt.Errorf("encrypting password failed")
+		return &model.Password{}, fmt.Errorf("encrypting password failed")
 	}
 
 	encryptedWebsite, err := utils.Encrypt(website, key)
 	if err != nil {
-		return fmt.Errorf("encrypting website failed")
+		return &model.Password{}, fmt.Errorf("encrypting website failed")
 	}
 
 	encryptedNote, err := utils.Encrypt(note, key)
 	if err != nil {
-		return fmt.Errorf("encrypting note failed")
+		return &model.Password{}, fmt.Errorf("encrypting note failed")
 	}
 
 	newPassword := &model.Password{

@@ -34,13 +34,18 @@ func (h *PasswordHandler) Register(c *gin.Context) {
 		return
 	}
 
-	err := h.passwordService.Create(userID, req.Name, req.Username, req.Password, req.Website, req.Note, req.Favorite)
+	password, err := h.passwordService.Create(userID, req.Name, req.Username, req.Password, req.Website, req.Note, req.Favorite)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "Password registred successfully"})
+	password.Username = req.Username
+	password.Password = req.Password
+	password.Website = req.Website
+	password.Note = req.Note
+
+	c.JSON(http.StatusCreated, gin.H{"message": "Password registred successfully", "data": password})
 }
 
 func (h *PasswordHandler) GetUserPasswords(c *gin.Context) {

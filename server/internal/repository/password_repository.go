@@ -18,7 +18,7 @@ type Password struct {
 }
 
 type PasswordRepository interface {
-	Create(userID string, password *model.Password) error
+	Create(userID string, password *model.Password) (*model.Password, error)
 	GetAll(userID string) ([]model.Password, error)
 	Update(passwordID string, userID string, updatedPassword Password) error
 	Delete(passwordID, userID string) error
@@ -32,10 +32,12 @@ func NewPasswordRepository(db *gorm.DB) PasswordRepository {
 	return &passwordRepository{db: db}
 }
 
-func (r *passwordRepository) Create(userID string, password *model.Password) error {
+func (r *passwordRepository) Create(userID string, password *model.Password) (*model.Password, error) {
 	password.UserID = uuid.MustParse(userID)
 
-	return r.db.Create(&password).Error
+	err := r.db.Create(&password).Error
+
+	return password, err
 }
 
 func (r *passwordRepository) GetAll(userID string) ([]model.Password, error) {
