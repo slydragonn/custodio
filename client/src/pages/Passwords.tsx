@@ -1,8 +1,10 @@
+import PasswordDialog from '@/components/passwords/PasswordDialog'
 import DesktopLayout from '@/layouts/Desktop'
 import useAuthStore from '@/store/authStore'
 import usePasswordStore from '@/store/passwordStore'
 import { PasswordData } from '@/types/passwords'
 import { defaultDateFormat } from '@/utils/date-format'
+import { css } from '@emotion/css'
 import {
   CopyIcon,
   EyeClosedIcon,
@@ -10,7 +12,6 @@ import {
   InfoCircledIcon,
   MagnifyingGlassIcon,
   Pencil1Icon,
-  PlusIcon,
   ResetIcon,
   StarFilledIcon,
   StarIcon,
@@ -39,7 +40,7 @@ import { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function Passwords() {
-  const { passwords, getData, loading } = usePasswordStore()
+  const { passwords, getData, loading, add } = usePasswordStore()
   const { token } = useAuthStore()
   const [showPassword, setShowPassword] = useState<PasswordData | null>()
   const [isSecret, setIsSecret] = useState<boolean>(true)
@@ -71,7 +72,13 @@ export default function Passwords() {
 
   return (
     <DesktopLayout>
-      <Box p="6" maxWidth="400px" width="100%">
+      <Box
+        p="6"
+        maxWidth="400px"
+        width="100%"
+        height="100vh"
+        style={{ background: 'var(--gray-2)' }}
+      >
         {loading ? (
           <Spinner />
         ) : (
@@ -84,21 +91,31 @@ export default function Passwords() {
 
             <Flex width="100%" justify="between" align="center" my="6">
               <Text>My password vault</Text>
-              <Tooltip content="Add new password">
-                <IconButton>
-                  <PlusIcon />
-                </IconButton>
-              </Tooltip>
+              <PasswordDialog
+                savePassword={(newPassword) =>
+                  add(newPassword, '/server/api/passwords', token)
+                }
+              />
             </Flex>
             <ScrollArea
               type="auto"
               scrollbars="vertical"
-              style={{ height: 'auto', maxHeight: '80vh' }}
+              style={{ height: 'auto', maxHeight: '68vh' }}
             >
               <Flex direction="column" gap="4">
                 {passwords ? (
                   passwords.map((password) => (
-                    <Card key={password.ID}>
+                    <Card
+                      key={password.ID}
+                      onClick={() => findPasswordByID(password.ID)}
+                      className={css`
+                        user-select: none;
+                        transition: all 0.2s;
+                        &:hover {
+                          background: var(--indigo-6);
+                        }
+                      `}
+                    >
                       <Flex justify="between">
                         <Flex direction="column" align="start">
                           <Text
@@ -111,18 +128,31 @@ export default function Passwords() {
                               overflow: 'hidden',
                               whiteSpace: 'nowrap',
                             }}
-                            onClick={() => findPasswordByID(password.ID)}
                           >
                             {password.Name}
                           </Text>
-                          <Text color="gray" size="2">
+                          <Text
+                            color="gray"
+                            size="2"
+                            wrap="nowrap"
+                            style={{
+                              width: '270px',
+                              textOverflow: 'ellipsis',
+                              overflow: 'hidden',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
                             {password.Website}
                           </Text>
                           <Badge variant="surface" color="indigo">
                             {defaultDateFormat(password.CreatedAt)}
                           </Badge>
                         </Flex>
-                        <StarIcon />
+                        {password.Favorite ? (
+                          <StarFilledIcon color="yellow" />
+                        ) : (
+                          <StarIcon color="gray" />
+                        )}
                       </Flex>
                     </Card>
                   ))

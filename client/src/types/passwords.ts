@@ -12,10 +12,10 @@ export interface PasswordData {
 }
 
 export interface PasswordForm {
-  Name: string
-  Username: string
-  Password: string
-  Website: string
-  Note: string
-  Favorite: boolean
+  name: string
+  username: string
+  password: string
+  website: string
+  note: string
+  favorite: boolean
 }

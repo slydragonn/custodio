@@ -1,4 +1,4 @@
-import { PasswordData } from '@/types/passwords'
+import { PasswordData, PasswordForm } from '@/types/passwords'
 import { Token } from '@/types/user'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
@@ -7,6 +7,7 @@ interface PasswordStore {
   passwords: [] | PasswordData[]
   loading: boolean
   getData: (url: string, token: Token) => Promise<void>
+  add: (password: PasswordForm, url: string, token: Token) => Promise<void>
 }
 
 const usePasswordStore = create<PasswordStore>()(
@@ -29,6 +30,39 @@ const usePasswordStore = create<PasswordStore>()(
 
           const data: PasswordData[] = await response.json()
           set({ passwords: data, loading: false })
+        } catch (error) {
+          set({ loading: false })
+          console.error(error)
+        }
+      },
+      add: async (password: PasswordForm, url: string, token: Token) => {
+        set({ loading: true })
+        try {
+          const headers = new Headers()
+          headers.append('Authorization', `Bearer ${token}`)
+          const response = await fetch(url, {
+            headers,
+            method: 'POST',
+            body: JSON.stringify(password),
+          })
+
+          if (response.status == 401) {
+            throw new Error('Unauthorized')
+          }
+
+          const createdPassword = await response.json()
+          console.log(createdPassword)
+
+          set((state) => {
+            if (!state.passwords) {
+              return { passwords: [createdPassword.data] }
+            }
+            return {
+              passwords: [...state.passwords, createdPassword.data],
+            }
+          })
+
+          set({ loading: false })
         } catch (error) {
           set({ loading: false })
           console.error(error)
