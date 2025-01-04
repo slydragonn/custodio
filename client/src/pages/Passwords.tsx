@@ -11,7 +11,8 @@ import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 
 export default function Passwords() {
-  const { passwords, getPasswords, loading, addPassword } = usePasswordStore()
+  const { passwords, getPasswords, loading, addPassword, deletePassword } =
+    usePasswordStore()
   const { token } = useAuthStore()
   const [showPassword, setShowPassword] = useState<PasswordData | null>()
   const [isSecret, setIsSecret] = useState<boolean>(true)
@@ -28,6 +29,11 @@ export default function Passwords() {
     if (password) {
       setShowPassword(() => password)
     }
+  }
+
+  const deletePasswordByID = (id: string) => {
+    deletePassword(id, '/server/api/passwords/', token)
+    setShowPassword(null)
   }
 
   return (
@@ -62,6 +68,7 @@ export default function Passwords() {
             <ActionsMenu
               showPassword={showPassword}
               setShowPassword={setShowPassword}
+              deletePassword={() => deletePasswordByID(showPassword.ID)}
             />
             <PasswordDataList
               name={showPassword.Name}

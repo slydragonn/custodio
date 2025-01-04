@@ -1,5 +1,6 @@
 import { PasswordData, PasswordForm } from '@/types/passwords'
 import { Token } from '@/types/user'
+import toast from 'react-hot-toast'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -12,6 +13,7 @@ interface PasswordStore {
     url: string,
     token: Token,
   ) => Promise<void>
+  deletePassword: (id: string, url: string, token: Token) => Promise<void>
 }
 
 const usePasswordStore = create<PasswordStore>()(
@@ -73,6 +75,35 @@ const usePasswordStore = create<PasswordStore>()(
           set({ loading: false })
         } catch (error) {
           set({ loading: false })
+          console.error(error)
+        }
+      },
+      deletePassword: async (id: string, url: string, token: Token) => {
+        try {
+          const headers = new Headers()
+          headers.append('Authorization', `Bearer ${token}`)
+          const response = await fetch(url + id, {
+            headers,
+            method: 'DELETE',
+          })
+
+          if (response.status == 401) {
+            throw new Error('Unauthorized')
+          }
+
+          set((state) => {
+            if (state.passwords) {
+              return {
+                passwords: state.passwords.filter((el) => el.ID != id),
+              }
+            }
+            return state
+          })
+
+          const data = await response.json()
+
+          toast.success(data.message)
+        } catch (error) {
           console.error(error)
         }
       },
